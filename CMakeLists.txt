@@ -3,6 +3,15 @@ project(superbuild)
 
 include(ExternalProject)
 
+
+# third-party- 基础依赖
+ExternalProject_Add(third-party
+    SOURCE_DIR ${CMAKE_SOURCE_DIR}/../third-party
+    CMAKE_ARGS
+        -DCMAKE_INSTALL_PREFIX=${SYSROOT_DIR}
+)
+
+
 # ConfMMap 组件 - 基础依赖
 ExternalProject_Add(ConfMMap
     SOURCE_DIR ${CMAKE_SOURCE_DIR}/../components/ConfMMap
@@ -19,9 +28,18 @@ ExternalProject_Add(DataOperation
         -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
 
+# someip 组件 
+ExternalProject_Add(HSSomeIPCommunicationMatrix
+    SOURCE_DIR ${CMAKE_SOURCE_DIR}/../components/Common/HSSomeIPCommunicationMatrix
+    INSTALL_DIR ${SYSROOT_DIR}
+    CMAKE_ARGS
+        -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+)
+
+
 ExternalProject_Add(OTA
     SOURCE_DIR ${CMAKE_SOURCE_DIR}/../components/OTA
-    DEPENDS ConfMMap DataOperation
+    DEPENDS ConfMMap DataOperation HSSomeIPCommunicationMatrix third-party
     CMAKE_ARGS
         -DCMAKE_PREFIX_PATH=${SYSROOT_DIR}
         -DFXLOG_ROOT=${CMAKE_BINARY_DIR}/sysroot
