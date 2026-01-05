@@ -6,8 +6,7 @@ include(ExternalProject)
 # ConfMMap 组件 - 基础依赖
 ExternalProject_Add(ConfMMap
     SOURCE_DIR ${CMAKE_SOURCE_DIR}/../components/ConfMMap
-    
-     ${SYSROOT_DIR}
+    INSTALL_DIR ${SYSROOT_DIR}
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
