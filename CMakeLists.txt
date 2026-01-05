@@ -3,23 +3,33 @@ project(superbuild)
 
 include(ExternalProject)
 
-# Logging 组件 - 基础依赖
-ExternalProject_Add(logging
-    SOURCE_DIR ${CMAKE_SOURCE_DIR}/../components/logging
-    INSTALL_DIR ${CMAKE_BINARY_DIR}/sysroot
+# ConfMMap 组件 - 基础依赖
+ExternalProject_Add(ConfMMap
+    SOURCE_DIR ${CMAKE_SOURCE_DIR}/../components/ConfMMap
+    
+     ${SYSROOT_DIR}
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 )
 
-# Example 工程 - 依赖 logging，需要先编译和安装 logging（不安装 example）
-ExternalProject_Add(example
-    SOURCE_DIR ${CMAKE_SOURCE_DIR}/../components/example
-    DEPENDS logging
+# DataOperation 组件 
+ExternalProject_Add(DataOperation
+    SOURCE_DIR ${CMAKE_SOURCE_DIR}/../components/Common/DataOperation
+    INSTALL_DIR ${SYSROOT_DIR}
     CMAKE_ARGS
-        -DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/sysroot
+        -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+)
+
+ExternalProject_Add(OTA
+    SOURCE_DIR ${CMAKE_SOURCE_DIR}/../components/OTA
+    DEPENDS ConfMMap DataOperation
+    CMAKE_ARGS
+        -DCMAKE_PREFIX_PATH=${SYSROOT_DIR}
         -DFXLOG_ROOT=${CMAKE_BINARY_DIR}/sysroot
+        -DSYSROOT_DIR=${SYSROOT_DIR}
     INSTALL_COMMAND ""
 )
+
 
 # Qt 工程示例（如果使用 CMake）：
 # ExternalProject_Add(qt_app
